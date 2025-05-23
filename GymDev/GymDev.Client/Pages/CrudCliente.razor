@@ -13,6 +13,7 @@
 }
 else
 {
+	
 	<div class="grid-container">
 		<DxGrid Data="@Cliente" ShowAllRows="true" ColumnResizeMode="GridColumnResizeMode.NextColumn" TextWrapEnabled="false">
 			<Columns>
@@ -30,7 +31,7 @@ else
 	</div>
 }
 @code {
-	// private List<Cliente> Clientes;
+
 		    object Cliente { get; set; }
 
 	protected override async Task OnInitializedAsync()
