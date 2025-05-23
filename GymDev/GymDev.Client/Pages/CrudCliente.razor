@@ -13,48 +13,6 @@
 }
 else
 {
-	@* <p>
-		<button class="btn btn-primary" @onclick="AbrirAgregarClietne">Crear Cliente</button>
-	</p>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Apellido</th>
-				<th>Telefono</th>
-				<th>Email</th>
-			
-
-				<th>Endereco</th>
-				<th>Fecha_Ncimiento</th>
-				<th>Fecha_Apertura</th>
-				<th>Fecha_Vencimiento</th>
-				<th>Sexo</th>
-				
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var cliente in Clientes)
-			{
-				<tr>
-					<td>@cliente.Id</td>
-					<td>@cliente.Nombre</td>
-					<td>@cliente.Apellido</td>
-					<td>@cliente.Telefone</td>
-					<td>@cliente.Email</td>
-				
-					<td>@cliente.Endereco</td>
-					<td>@cliente.Fecha_Ncimiento</td>
-					<td>@cliente.Fecha_Apertura</td>
-					<td>@cliente.Fecha_Vencimiento</td>
-					<td>@cliente.Sexo</td>
-					<td><button class="btn btn-danger" @onclick="@(() => EliminarPersonaje(cliente.Id))">Eliminar</button></td>
-				</tr>
-			}
-		</tbody>
-	</table> *@
-
 	<div class="grid-container">
 		<DxGrid Data="@Cliente" ShowAllRows="true" ColumnResizeMode="GridColumnResizeMode.NextColumn" TextWrapEnabled="false">
 			<Columns>
