@@ -1,0 +1,61 @@
+.notification-container[b-xd2kd5y3cs] {
+    position: relative;
+    display: inline-block;
+}
+
+.Noti-item[b-xd2kd5y3cs] {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #333;
+}
+.notification-icon[b-xd2kd5y3cs] {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+    position: relative; 
+}
+
+.noti-dot[b-xd2kd5y3cs] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+}
+.unread[b-xd2kd5y3cs] {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+      
+.Noti-icon[b-xd2kd5y3cs] {
+    width: 2rem; 
+    height: 2rem;
+    border-radius: 50%; 
+    margin-right: 0.75rem;
+}
+
+.Noti-content[b-xd2kd5y3cs] {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.Noti-title[b-xd2kd5y3cs] {
+    font-weight: bold;  
+    margin-bottom: 0.25rem;
+}
+
+.Noti-body[b-xd2kd5y3cs] {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.Noti-date[b-xd2kd5y3cs] {
+    font-size: 0.8rem;
+    color: #777;
+    margin-left: 1rem;
+   
+}

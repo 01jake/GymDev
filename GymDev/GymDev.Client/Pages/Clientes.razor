@@ -1,0 +1,41 @@
+﻿@page "/MostrarCliente-data"
+@using DevExpress.Blazor.Internal
+@using GymDev.Shared.Modelos;
+@using GymDev.Shared.Data;
+
+@using GymDev.Client.Servicios;
+@using Microsoft.EntityFrameworkCore
+@inject EntrenadorServicio EntrenadorServicio
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+<div class="cw-480 demo-preventsel">
+    <DxAccordion ExpandMode="ExpandMode"
+                 ExpandCollapseAction="ExpandCollapseAction"
+                 AnimationType="LayoutAnimationType.Slide">
+        <Items>
+            @foreach (var (Entrenadores, i) in Items)
+            {
+                <DxAccordionItem Text=@($"{Entrenadores.Nombre} {Entrenadores.Apellido}") Expanded=@(i == 0)>
+                    <ContentTemplate>
+                        <div class="py-3 px-3" tabindex="0">
+                            <MostrarCliente Entrenadores="@Entrenadores" />
+                        </div>
+                    </ContentTemplate>
+                </DxAccordionItem>
+            }
+        </Items>
+    </DxAccordion>
+</div>
+
+@code {
+    IEnumerable<Entrenador> DataSource;
+    IEnumerable<(Entrenador, int)> Items;
+    AccordionExpandMode ExpandMode { get; set; } = AccordionExpandMode.SingleOrNone;
+    AccordionExpandCollapseAction ExpandCollapseAction { get; set; } = AccordionExpandCollapseAction.HeaderClick;
+    protected override async Task OnInitializedAsync() {
+        DataSource = await EntrenadorServicio.ObtenerEntrenadores();
+        Items = DataSource.Select((item, index) => (item, index));
+        await base.OnInitializedAsync();
+    }
+}

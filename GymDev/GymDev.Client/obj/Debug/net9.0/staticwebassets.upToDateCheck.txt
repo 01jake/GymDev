@@ -1,0 +1,5 @@
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\wwwroot\appsettings.Development.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\wwwroot\appsettings.json
+wwwroot\appsettings.Development.json
+wwwroot\appsettings.json
+wwwroot\Img\Prueba.jpg

@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\jake3\\OneDrive\\Desktop\\GymDev\\GymDev\\GymDev.Client\\bin\\Debug\\net9.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\jake3\\OneDrive\\Desktop\\GymDev\\GymDev\\GymDev.Client\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\GymDev.Client.bundle.scp.css",
+      "PackagePath": "staticwebassets\\GymDev.Client.6kvvx20byi.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\jake3\\OneDrive\\Desktop\\GymDev\\GymDev\\GymDev.Client\\wwwroot\\Img\\Prueba.jpg",
+      "PackagePath": "staticwebassets\\Img\\Prueba.jpg"
+    },
+    {
+      "Id": "C:\\Users\\jake3\\OneDrive\\Desktop\\GymDev\\GymDev\\GymDev.Client\\wwwroot\\appsettings.Development.json",
+      "PackagePath": "staticwebassets\\appsettings.Development.json"
+    },
+    {
+      "Id": "C:\\Users\\jake3\\OneDrive\\Desktop\\GymDev\\GymDev\\GymDev.Client\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.GymDev.Client.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.GymDev.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.GymDev.Client.props",
+      "PackagePath": "build\\GymDev.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.GymDev.Client.props",
+      "PackagePath": "buildMultiTargeting\\GymDev.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.GymDev.Client.props",
+      "PackagePath": "buildTransitive\\GymDev.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

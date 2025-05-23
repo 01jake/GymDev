@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@inject IFileVersionProvider FileVersionProvider
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link href=@AppendVersion("_content/DevExpress.Blazor.Themes/blazing-dark.bs5.min.css") rel="stylesheet" />
+
+    @DxResourceManager.RegisterScripts()
+    <link href=@AppendVersion("css/site.css") rel="stylesheet" />
+    <link href=@AppendVersion("GymDev.styles.css") rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="_content/bootstrap/css/bootstrap.min.css" />
+    <HeadOutlet />
+
+</head>
+
+<body>
+    <Routes></Routes>
+    <script src="_framework/blazor.web.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+@code{
+    private string AppendVersion(string path) => FileVersionProvider.AddFileVersionToPath("/", path);
+}

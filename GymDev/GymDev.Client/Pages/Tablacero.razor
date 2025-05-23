@@ -1,0 +1,127 @@
+﻿@page "/TablaCliente"
+@using DevExpress.Blazor.Internal
+@using GymDev.Shared.Modelos;
+@using GymDev.Shared.Data;
+
+@using GymDev.Client.Servicios;
+@using Microsoft.EntityFrameworkCore
+@inject ClienteServicio ClienteServicio
+@inject NavigationManager NavigationManager
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+<PruebaNotificacion /> 
+
+<h3>Tablacerooo</h3>
+  @if (Clientes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxGrid Data="@Clientes"
+
+            CustomizeEditModel="Grid_CustomizeEditModel"
+            EditModelSaving="OnEditModelSaving"
+            DataItemDeleting="OnDataItemDeleting"
+          
+            KeyFieldName="Id">
+ 
+        <Columns>
+           
+            <DxGridCommandColumn Width="160px" />
+            <DxGridDataColumn Caption="Nombre" FieldName="Nombre" />
+            <DxGridDataColumn Caption="Apellido" FieldName="Apellido" />
+            <DxGridDataColumn Caption="Telefono" FieldName="Telefone" />
+            <DxGridDataColumn Caption="Email" FieldName="Email" />
+            <DxGridDataColumn Caption="Endereco" FieldName="Endereco" />
+            <DxGridDataColumn Caption="Sexo" FieldName="Sexo" />
+            <DxGridDataColumn Caption="Fecha Nacimiento" FieldName="Fecha_Ncimiento" />
+            <DxGridDataColumn Caption="Fecha Apertura" FieldName="Fecha_Apertura" />
+            <DxGridDataColumn Caption="Fecha Vencimiento" FieldName="Fecha_Vencimiento" />
+
+      
+        </Columns>
+       
+        <EditFormTemplate Context="editFormContext">
+            <DxFormLayout>
+                <DxFormLayoutItem Caption="Nombre:">
+                    @editFormContext.GetEditor("Nombre")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Apellido:">
+                    @editFormContext.GetEditor("Apellido")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Telefone:">
+                    @editFormContext.GetEditor("Telefone")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Email:">
+                    @editFormContext.GetEditor("Email")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Endereco:">
+                    @editFormContext.GetEditor("Endereco")
+                </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Fecha de Nacimiento:">
+                    @editFormContext.GetEditor("Fecha_Ncimiento")
+                </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Fecha de Mensualidad:">
+                    @editFormContext.GetEditor("Fecha_Apertura")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Fecha de vencimiento:">
+                    @editFormContext.GetEditor("Fecha_Vencimiento")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Sexo:">
+                    @editFormContext.GetEditor("Sexo")
+                </DxFormLayoutItem>
+            </DxFormLayout>
+        </EditFormTemplate>
+    </DxGrid>
+}
+@code {
+    private List<Cliente> Clientes;
+    private List<Notificacion> _listNotificaciones = new();
+    private bool _showNotificaciones = false;
+    protected override async Task OnInitializedAsync()
+    {
+        // DictionaryEntries = OriginalDictionaryEntries;
+    	Clientes = await ClienteServicio.ObtenerCliente();
+    }
+
+    void Grid_CustomizeEditModel(GridCustomizeEditModelEventArgs e)  
+       {  
+        if (e.IsNew)
+        {
+            var Clientes = (Cliente)e.EditModel;
+            Clientes.Nombre = "";
+            Clientes.Apellido = "";
+        }
+       }
+    async Task OnEditModelSaving(GridEditModelSavingEventArgs e)  
+       {  
+           if (e.IsNew)  
+               await ClienteServicio.AgregarCliente((Cliente)e.EditModel);  
+           else  
+           {  
+               var clienteActualizado = (Cliente)e.EditModel;  
+               clienteActualizado.Id = ((Cliente)e.DataItem).Id;  
+               await ClienteServicio.ActualizarCliente(clienteActualizado);  
+           }  
+           await UpdateDataAsync();  
+       }
+
+   
+
+    async Task OnDataItemDeleting(GridDataItemDeletingEventArgs e)  
+       {  
+           var cliente = (Cliente)e.DataItem;  
+           await ClienteServicio.EliminarCliente(cliente.Id);  
+           await UpdateDataAsync();  
+       }
+    async Task UpdateDataAsync()
+    {
+        Clientes = await ClienteServicio.ObtenerCliente();
+    }
+    private void ToggleNotificaciones()
+    {
+        _showNotificaciones = !_showNotificaciones;
+    }
+}

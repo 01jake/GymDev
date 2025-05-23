@@ -1,0 +1,44 @@
+﻿@using GymDev.Shared.Data
+@using DevExpress.Blazor
+
+
+
+<div class="d-flex align-items-center gap-2 p-2 ps-0 border-bottom"
+     style="@(DisplayContext.Read ? string.Empty : "background-color: var(--bs-gray-200)")"
+     @onclick="() => Click.InvokeAsync(DisplayContext)">
+    <i class="@DisplayContext.IconClass"
+       style="font-size:1.2rem; display:flex; justify-content:center; align-items:center;"></i>
+    <div class="d-flex flex-column w-100">
+        <p class="m-0"><strong>@DisplayContext.Title</strong></p>
+        <p class="m-0">@DisplayContext.Body</p>
+        <small class="align-self-end">@FormatearFecha(DisplayContext.CreateDate)</small>
+    </div>
+</div>
+    
+@code {
+    [Parameter] public Notificacion DisplayContext { get; set; } = null!;
+    [Parameter] public EventCallback<Notificacion> Click { get; set; }
+
+    private string FormatearFecha(DateTime fecha)
+    {
+        var diff = DateTime.Now - fecha;
+
+        if (diff.TotalMinutes < 60)
+            return $"Hace {(int)diff.TotalMinutes} minuto{(diff.TotalMinutes >= 2 ? "s" : "")}";
+
+        if (diff.TotalHours < 24)
+        {
+            int h = (int)diff.TotalHours;
+            int m = (int)(diff.TotalMinutes % 60);
+            return $"Hace {h} hora{(h != 1 ? "s" : "")}" + (m > 0 ? $" y {m} minuto{(m != 1 ? "s" : "")}" : "");
+        }
+
+        if (diff.TotalDays < 7)
+            return $"Hace {(int)diff.TotalDays} día{((int)diff.TotalDays != 1 ? "s" : "")}";
+
+        if (diff.TotalDays < 30)
+            return $"Hace {(int)(diff.TotalDays / 7)} semana{((int)(diff.TotalDays / 7) != 1 ? "s" : "")}";
+
+        return $"Hace {(int)(diff.TotalDays / 30)} mes{((int)(diff.TotalDays / 30) != 1 ? "es" : "")}";
+    }
+}

@@ -1,0 +1,88 @@
+﻿@page "/TablaNotificaciones"
+@using DevExpress.Blazor.Internal
+@using GymDev.Client.Servicios
+@using GymDev.Shared.Data;
+
+@inject NotificacionServicio NotificacionServicio
+@inject NavigationManager NavigationManager
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+<DxCardHeader>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <h1 class="mb-0">Notificaciones</h1>
+            @if (noleidas > 0)
+            {
+                <p class="ml-2">@($"{noleidas} No leídas")</p>
+            }
+        </div>
+        @if (noleidas > 0)
+        {
+            <DxButton Text="Marcar todas como leídas"
+            RenderStyle="ButtonRenderStyle.Secondary"
+            Click="@MarcadasTodasLeidas" />
+        }
+    </div>
+</DxCardHeader>
+
+
+<div class="cw-480 mb-4">
+    <DxTabs ActiveTabIndex="@ActiveTabIndex" ActiveTabIndexChanged="@OnActiveTabIndexChanged">
+        <DxTab Text="Todas" TabIconCssClass="tabs-icon-home tabs-icon" />
+        <DxTab Text="No Leídas" TabIconCssClass="tabs-icon-products tabs-icon" />
+        <DxTab Text="Leídas" TabIconCssClass="tabs-icon-support tabs-icon" />
+    </DxTabs>
+</div>
+
+<DxListBox Data="@Filtro()" 
+        @bind-Value="@Value"
+           CssClass="w-100 h-100 border-0"
+           style="max-height: 25rem">
+    <ItemDisplayTemplate>
+        <Pruebanoti1 DisplayContext="@context.DataItem"
+                         Click="Click" />
+        @if (!Filtro().Any())
+        {
+            <p>No hay notificaciones</p>
+        }
+    </ItemDisplayTemplate>
+</DxListBox>
+
+@code {
+    private List<Notificacion> Notificaciones = new();
+    private int ActiveTabIndex = 0;
+    Notificacion? Value;
+    private int noleidas => Notificaciones.Count(n => !n.Read);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NotificacionServicio.InicializarAsync();
+        Notificaciones = NotificacionServicio.ObtenerTodas().ToList();
+    }
+    private void OnActiveTabIndexChanged(int index) => ActiveTabIndex = index;
+
+    private IEnumerable<Notificacion> Filtro() => ActiveTabIndex switch
+    {
+        1 => Notificaciones.Where(n => !n.Read),
+        2 => Notificaciones.Where(n => n.Read),
+        _ => Notificaciones
+    };
+    
+
+    private void MarcadasTodasLeidas()
+    {
+        foreach (var notif in Notificaciones)
+        {
+            notif.Read = true;
+        }
+    }
+
+    private Task Click(Notificacion notif)
+    {
+        notif.Read = true;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+  
+}

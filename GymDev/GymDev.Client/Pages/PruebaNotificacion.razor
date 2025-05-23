@@ -1,0 +1,132 @@
+﻿@using GymDev.Client.Servicios
+@using GymDev.Shared.Data
+
+@inject NotificacionServicio NotificacionServicio
+@inject NavigationManager NavigationManager
+ <DxToolbar ItemRenderStyleMode="ToolbarRenderStyleMode.Plain" SizeMode="SizeMode.Large">
+        <DxToolbarItem BeginGroup="true"
+                       Alignment="ToolbarItemAlignment.Right"
+                       Click="@(()=> openNotif = !openNotif)"
+                       id="icon-bell">
+            <div class="notification-container">
+                <i class="fa-regular fa-bell">
+                    @if (notificacion.Count > 0 && notificacion.Any(x => !x.Read))
+                    {
+                        <span class="badge rounded-pill bg-danger" style="font-size:0.5rem">
+                            @notificacion.Count(x => !x.Read)
+                        </span>
+                    }
+                </i>
+            </div>
+</DxToolbarItem>
+</DxToolbar>
+<DxFlyout @bind-IsOpen=openNotif
+          Id="flyout-notif"
+          RenderStyle="@ButtonRenderStyle.Secondary"
+          PositionTarget="#icon-bell"
+          CloseMode="FlyoutCloseMode.Close"
+          FooterVisible="true"
+          FooterCssClass="d-flex justify-content-center"
+          Position="FlyoutPosition.BottomEnd"
+          Width="max(25vw, 250px)"
+          Height="max(400px)"
+          PreventCloseOnPositionTargetClick="true">
+
+    <BodyContentTemplate>
+        <DxListBox Data="@notificacion"
+                   @bind-Value="@_selectedNotif"
+                   CssClass="w-100 h-100 border-0"
+                   SelectionMode="ListBoxSelectionMode.None"
+                   SelectedItemsChanged="@((IEnumerable<Notificacion> values)=>OnNotificationSelected(values))">
+            <ItemTemplate Context="displayContext">
+                <div class="d-flex align-items-center gap-2 p-2 ps-0 border-bottom" style="@(displayContext.Read ? "" : "background-color: var(--bs-gray-200)")" @onclick="(()=>Clickselect(displayContext))">
+                    <i class="@displayContext.IconClass" style="font-size:1.2rem;"></i>
+
+                    <div class="d-flex flex-column w-100">
+                        <p class="m-0"><strong>@displayContext.Title</strong></p>
+                        <p class="m-0">@displayContext.Body</p>
+                        <small class="align-self-end">@FormatearFecha(displayContext.CreateDate)</small>
+                        
+                    </div>
+                </div>
+            </ItemTemplate>
+        </DxListBox>
+    </BodyContentTemplate>
+ 
+
+    <FooterContentTemplate>
+        <DxButton Text="Ver Todas"
+                  RenderStyle="ButtonRenderStyle.Secondary"
+                  RenderStyleMode="ButtonRenderStyleMode.Text"
+                  Click="@(() => NavigationManager.NavigateTo("/TablaNotificaciones"))">
+        </DxButton>
+    </FooterContentTemplate>
+</DxFlyout>
+
+@code {
+    private int noleidas => notificacion.Count(n => !n.Read);
+
+    Notificacion? _selectedNotif;
+    bool openNotif;
+    private List<Notificacion> notificacion = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NotificacionServicio.InicializarAsync();
+        notificacion = NotificacionServicio.ObtenerTodas().ToList();
+    }
+    void OnNotificationSelected(IEnumerable<Notificacion> values)
+    {
+     
+        values.First().Read = true;
+    }
+    void Clickselect(Notificacion noti)
+    {
+        noti.Read = true;
+    }
+ 
+    private async Task IrPagina(int notificationId)
+    {
+        NotificacionServicio.MarcarComoLeida(notificationId);
+        NavigationManager.NavigateTo("/TablaNotificaciones");
+        notificacion = NotificacionServicio.ObtenerTodas().ToList();
+        StateHasChanged();
+    }
+
+    private string FormatearFecha(DateTime createDate)
+    {
+        var ahora = DateTime.Now;
+        var diferencia = ahora - createDate;
+
+        if (diferencia.TotalHours < 1)
+        {
+            int minutos = (int)diferencia.TotalMinutes;
+            return $"Hace {minutos} minuto{(minutos != 1 ? "s" : "")}";
+        }
+
+        if (diferencia.TotalHours < 24)
+        {
+            int horas = (int)diferencia.TotalHours;
+            int minutos = (int)(diferencia.TotalMinutes % 60);
+            return $"Hace {horas} hora{(horas != 1 ? "s" : "")}" +
+                   (minutos > 0 ? $" y {minutos} minuto{(minutos != 1 ? "s" : "")}" : "");
+        }
+
+        if (diferencia.TotalDays < 7)
+        {
+            int dias = (int)diferencia.TotalDays;
+            int horas = (int)(diferencia.TotalHours % 24);
+            return $"Hace {dias} día{(dias != 1 ? "s" : "")} y {horas} hora{(horas != 1 ? "s" : "")}";
+        }
+
+        if (diferencia.TotalDays < 30)
+        {
+            int semanas = (int)(diferencia.TotalDays / 7);
+            int dias = (int)(diferencia.TotalDays % 7);
+            return $"Hace {semanas} semana{(semanas != 1 ? "s" : "")} y {dias} día{(dias != 1 ? "s" : "")}";
+        }
+
+        int meses = (int)(diferencia.TotalDays / 30);
+        return $"Hace {meses} mes{(meses != 1 ? "es" : "")}";
+    }
+}

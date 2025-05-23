@@ -1,0 +1,101 @@
+﻿@page "/CrudEntrenadores"
+@using GymDev.Shared.Modelos;
+@using GymDev.Client.Servicios;
+@inject EntrenadorServicio EntrenadorServicio
+@inject NavigationManager NavigationManager
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+<h3>CrudEntrenadores</h3>
+
+@if (Entrenadores == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxGrid Data="@Entrenadores"
+            CustomizeEditModel="Grid_CustomizeEditModel"
+            EditModelSaving="OnEditModelSaving"
+            DataItemDeleting="OnDataItemDeleting"
+            KeyFieldName="Id">
+
+        <Columns>
+
+            <DxGridCommandColumn Width="160px" />
+            <DxGridDataColumn Caption="Nombre" FieldName="Nombre" />
+            <DxGridDataColumn Caption="Apellido" FieldName="Apellido" />
+            <DxGridDataColumn Caption="Telefono" FieldName="Telefone" />
+            <DxGridDataColumn Caption="Email" FieldName="Email" />
+            <DxGridDataColumn Caption="Sexo" FieldName="Sexo" />
+            <DxGridDataColumn Caption="Fecha Nacimiento" FieldName="Fecha_Nacimiento" />
+          
+
+
+        </Columns>
+
+        <EditFormTemplate Context="editFormContext">
+            <DxFormLayout>
+                <DxFormLayoutItem Caption="Nombre:">
+                    @editFormContext.GetEditor("Nombre")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Apellido:">
+                    @editFormContext.GetEditor("Apellido")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Telefone:">
+                    @editFormContext.GetEditor("Telefone")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Email:">
+                    @editFormContext.GetEditor("Email")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Sexo:">
+                    @editFormContext.GetEditor("Sexo")
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Fecha de Nacimiento:">
+                    @editFormContext.GetEditor("Fecha_Nacimiento")
+                </DxFormLayoutItem>
+               
+            </DxFormLayout>
+        </EditFormTemplate>
+    </DxGrid>
+}
+@code {
+    public List<Entrenador> Entrenadores;
+    protected override async Task OnInitializedAsync()
+    {
+        Entrenadores = await EntrenadorServicio.ObtenerEntrenadores();
+    }
+    void Grid_CustomizeEditModel(GridCustomizeEditModelEventArgs e)
+    {
+        if (e.IsNew)
+        {
+            var Entrenadores = (Entrenador)e.EditModel;
+            Entrenadores.Nombre = "";
+            Entrenadores.Apellido = "";
+        }
+    }
+    async Task OnEditModelSaving(GridEditModelSavingEventArgs e)
+    {
+        if (e.IsNew)
+            await EntrenadorServicio.AgregarEntrenador((Entrenador)e.EditModel);
+        else
+        {
+            var entrenadorActualizado = (Entrenador)e.EditModel;
+            entrenadorActualizado.Id = ((Entrenador)e.DataItem).Id;
+            await EntrenadorServicio.ActualizarEntrenador(entrenadorActualizado);
+        }
+        await UpdateDataAsync();
+    }
+
+
+
+    async Task OnDataItemDeleting(GridDataItemDeletingEventArgs e)
+    {
+        var Entrenadores = (Entrenador)e.DataItem;
+        await EntrenadorServicio.EliminarEntrenador(Entrenadores.Id);
+        await UpdateDataAsync();
+    }
+    async Task UpdateDataAsync()
+    {
+        Entrenadores = await EntrenadorServicio.ObtenerEntrenadores();
+    }
+}

@@ -1,0 +1,86 @@
+﻿@page "/MostrarCliente"
+@using DevExpress.Blazor.Internal
+@using GymDev.Shared.Modelos;
+@using GymDev.Shared.Data;
+
+@using GymDev.Client.Servicios;
+@using Microsoft.EntityFrameworkCore
+@inject EntrenadorServicio EntrenadorServicio
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+<div class="e-card">
+    
+    <div class="e-main d-flex align-items-center">
+        <div class="flex-shrink-0">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="e-info flex-grow-1 ms-3">
+
+            <div class="e-name">@($"{Entrenadores.Nombre} {Entrenadores.Apellido}")</div>
+            <p class="e-title">@Entrenadores.Telefone</p>
+            @if (Detailed)
+            {
+                
+                
+                <p class="e-email">
+                    @(($"{Entrenadores.Nombre}.{Entrenadores.Apellido}@sample.com").ToLower())
+                </p>
+            }
+        </div>
+    </div>
+    @if (Detailed)
+    {
+        
+        <div class="e-divider my-3"></div>
+        @if (CustomDetails)
+        {
+
+            <div class="e-details">
+                @RenderDetailsItem("e-icon-address", nameof(Entrenador.Email), Entrenadores.Email)
+                @RenderDetailsItem("e-icon-city", nameof(Entrenador.Sexo), Entrenadores.Sexo)
+                @* @RenderDetailsItem("e-icon-birthdate", "Birth Date", Entrenadores.Fecha_Nacimiento?.ToShortDateString()) *@
+                @RenderDetailsItem("e-icon-phone", "Phone", Entrenadores.Telefone)
+            </div>
+        }
+        else
+        {
+            <DxFormLayout CssClass="e-details">
+                <DxFormLayoutItem>
+                    @RenderDetailsItem("e-icon-address", nameof(Entrenador.Email), Entrenadores.Email)
+                </DxFormLayoutItem>
+                <DxFormLayoutItem>
+                    @RenderDetailsItem("e-icon-city", nameof(Entrenador.Sexo), Entrenadores.Sexo)
+                </DxFormLayoutItem>
+                @* <DxFormLayoutItem> *@
+                @*     @RenderDetailsItem("e-icon-birthdate", "Birth Date", Entrenadores.Fecha_Nacimiento?.ToShortDateString()) *@
+                @* </DxFormLayoutItem> *@
+                <DxFormLayoutItem>
+                    @RenderDetailsItem("e-icon-phone", "Phone", Entrenadores.Telefone)
+                </DxFormLayoutItem>
+            </DxFormLayout>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public Entrenador Entrenadores { get; set; }
+    [Parameter] public bool Detailed { get; set; } = true;
+    [Parameter] public bool CustomDetails { get; set; }
+    [Parameter] public IEnumerable<KeyValuePair<string, object>> ImageAttributes { get; set; }
+    RenderFragment RenderDetailsItem(string iconCssClass, string caption, string value)
+    {
+        return
+    @<div class="d-flex align-items-center">
+        <div class="icon-container flex-shrink-0">
+            <span class="e-icon @iconCssClass"></span>
+        </div>
+        <div class="text-container flex-grow-1 ms-2">
+            <label>@caption:</label>
+            <div>@value</div>
+        </div>
+    </div>;
+    }
+    // string GetPhotoUrl()
+}

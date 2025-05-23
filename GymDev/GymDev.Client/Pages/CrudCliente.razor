@@ -1,0 +1,114 @@
+﻿@page "/CrudCliente"
+@using GymDev.Shared.Modelos;
+@using GymDev.Client.Servicios;
+@inject ClienteServicio ClienteServicio
+@inject NavigationManager NavigationManager
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+<h3>CrudCliente</h3>
+@if (Cliente == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	@* <p>
+		<button class="btn btn-primary" @onclick="AbrirAgregarClietne">Crear Cliente</button>
+	</p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Telefono</th>
+				<th>Email</th>
+			
+
+				<th>Endereco</th>
+				<th>Fecha_Ncimiento</th>
+				<th>Fecha_Apertura</th>
+				<th>Fecha_Vencimiento</th>
+				<th>Sexo</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cliente in Clientes)
+			{
+				<tr>
+					<td>@cliente.Id</td>
+					<td>@cliente.Nombre</td>
+					<td>@cliente.Apellido</td>
+					<td>@cliente.Telefone</td>
+					<td>@cliente.Email</td>
+				
+					<td>@cliente.Endereco</td>
+					<td>@cliente.Fecha_Ncimiento</td>
+					<td>@cliente.Fecha_Apertura</td>
+					<td>@cliente.Fecha_Vencimiento</td>
+					<td>@cliente.Sexo</td>
+					<td><button class="btn btn-danger" @onclick="@(() => EliminarPersonaje(cliente.Id))">Eliminar</button></td>
+				</tr>
+			}
+		</tbody>
+	</table> *@
+
+	<div class="grid-container">
+		<DxGrid Data="@Cliente" ShowAllRows="true" ColumnResizeMode="GridColumnResizeMode.NextColumn" TextWrapEnabled="false">
+			<Columns>
+				<DxGridDataColumn FieldName="Nombre" />
+				<DxGridDataColumn FieldName="Apellidos" />
+				<DxGridDataColumn FieldName="Email" />
+				<DxGridDataColumn FieldName="Endereco" Width="10%" />
+				<DxGridDataColumn FieldName="Fecha_Ncimiento" />
+				<DxGridDataColumn FieldName="Fecha_Apertura" />
+				<DxGridDataColumn FieldName="Fecha_Vencimiento" />
+				<DxGridDataColumn FieldName="Sexo" />
+				<DxGridDataColumn FieldName="Telefone"  />
+			</Columns>
+		</DxGrid>
+	</div>
+}
+@code {
+	// private List<Cliente> Clientes;
+		    object Cliente { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var suppliers = await ClienteServicio.ObtenerCliente();
+		Cliente = suppliers.Select(s =>
+		{
+			return new
+			{
+				Nombre = s.Nombre,
+				Apellidos = s.Apellido,
+				Email = s.Email,
+				Endereco = s.Endereco,
+				Fecha_Ncimiento = s.Fecha_Ncimiento,
+				Fecha_Apertura = s.Fecha_Apertura,
+				Fecha_Vencimiento = s.Fecha_Vencimiento,
+				ContactName = s.Sexo,
+				Telefone = s.Telefone
+			};
+		});
+	}
+	// protected override async Task OnInitializedAsync()
+	// {
+	// 	Clientes = await ClienteServicio.ObtenerCliente();
+	// }
+	private void AbrirAgregarClietne()
+	{
+		NavigationManager.NavigateTo($"/AddCliente");
+	}
+	private async Task EliminarPersonaje(int id)
+	{
+		await ClienteServicio.EliminarCliente(id);
+		Cliente = await ClienteServicio.ObtenerCliente();
+
+	}
+
+
+
+}
