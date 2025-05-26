@@ -1202,3 +1202,4 @@ C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev\obj\Debug\net9.0\refint\Gym
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev\obj\Debug\net9.0\GymDev.pdb
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev\obj\Debug\net9.0\GymDev.genruntimeconfig.cache
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev\obj\Debug\net9.0\ref\GymDev.dll
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev\obj\Debug\net9.0\GymDev.sourcelink.json

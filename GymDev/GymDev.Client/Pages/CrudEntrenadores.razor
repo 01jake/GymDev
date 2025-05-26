@@ -1,4 +1,4 @@
-﻿@page "/CrudEntrenadores"
+﻿@* @page "/CrudEntrenadores"
 @using GymDev.Shared.Modelos;
 @using GymDev.Client.Servicios;
 @inject EntrenadorServicio EntrenadorServicio
@@ -99,3 +99,4 @@ else
         Entrenadores = await EntrenadorServicio.ObtenerEntrenadores();
     }
 }
+ *@

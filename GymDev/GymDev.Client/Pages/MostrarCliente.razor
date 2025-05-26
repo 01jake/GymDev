@@ -1,4 +1,4 @@
-﻿@page "/MostrarCliente"
+﻿@* @page "/MostrarCliente"
 @using DevExpress.Blazor.Internal
 @using GymDev.Shared.Modelos;
 @using GymDev.Shared.Data;
@@ -40,7 +40,7 @@
             <div class="e-details">
                 @RenderDetailsItem("e-icon-address", nameof(Entrenador.Email), Entrenadores.Email)
                 @RenderDetailsItem("e-icon-city", nameof(Entrenador.Sexo), Entrenadores.Sexo)
-                @* @RenderDetailsItem("e-icon-birthdate", "Birth Date", Entrenadores.Fecha_Nacimiento?.ToShortDateString()) *@
+                
                 @RenderDetailsItem("e-icon-phone", "Phone", Entrenadores.Telefone)
             </div>
         }
@@ -53,9 +53,7 @@
                 <DxFormLayoutItem>
                     @RenderDetailsItem("e-icon-city", nameof(Entrenador.Sexo), Entrenadores.Sexo)
                 </DxFormLayoutItem>
-                @* <DxFormLayoutItem> *@
-                @*     @RenderDetailsItem("e-icon-birthdate", "Birth Date", Entrenadores.Fecha_Nacimiento?.ToShortDateString()) *@
-                @* </DxFormLayoutItem> *@
+               
                 <DxFormLayoutItem>
                     @RenderDetailsItem("e-icon-phone", "Phone", Entrenadores.Telefone)
                 </DxFormLayoutItem>
@@ -82,5 +80,5 @@
         </div>
     </div>;
     }
-    // string GetPhotoUrl()
-}
+   
+} *@

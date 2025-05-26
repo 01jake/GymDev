@@ -1,5 +1,4 @@
-﻿@page "/TablaNotificaciones"
-@using DevExpress.Blazor.Internal
+﻿@* @using DevExpress.Blazor.Internal
 @using GymDev.Client.Servicios
 @using GymDev.Shared.Data;
 
@@ -7,6 +6,7 @@
 @inject NavigationManager NavigationManager
 @attribute [StreamRendering(true)]
 @rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
 <DxCardHeader>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
@@ -34,32 +34,47 @@
     </DxTabs>
 </div>
 
-<DxListBox Data="@Filtro()" 
-        @bind-Value="@Value"
+<DxPager PageCount="@PageCount"
+         @bind-ActivePageIndex="@ActivePageIndex"
+         CssClass="mb-3" />
+
+<DxListBox Data="@Paginadas()"
+           @bind-Value="@Value"
+           ListRenderMode="ListRenderMode.Virtual"
+           TData="Notificacion"
+           TValue="Notificacion"
+           SelectionMode="ListBoxSelectionMode.Multiple"
+           TextFieldName="@nameof(Notificacion.Title)"
            CssClass="w-100 h-100 border-0"
            style="max-height: 25rem">
     <ItemDisplayTemplate>
         <Pruebanoti1 DisplayContext="@context.DataItem"
-                         Click="Click" />
+                     Click="Click" />
         @if (!Filtro().Any())
         {
             <p>No hay notificaciones</p>
         }
     </ItemDisplayTemplate>
+
 </DxListBox>
 
+
+<button class="btn btn-primary" @onclick="Simularnotificacion"> </button>
 @code {
     private List<Notificacion> Notificaciones = new();
-    private int ActiveTabIndex = 0;
     Notificacion? Value;
+    private const int PageSize = 5;
+    private int ActivePageIndex { get; set; } = 0;
+    private int ActiveTabIndex = 0;
     private int noleidas => Notificaciones.Count(n => !n.Read);
+    private int PageCount => (int)Math.Ceiling((double)Filtro().Count() / PageSize);
+
 
     protected override async Task OnInitializedAsync()
     {
         await NotificacionServicio.InicializarAsync();
         Notificaciones = NotificacionServicio.ObtenerTodas().ToList();
     }
-    private void OnActiveTabIndexChanged(int index) => ActiveTabIndex = index;
 
     private IEnumerable<Notificacion> Filtro() => ActiveTabIndex switch
     {
@@ -67,7 +82,19 @@
         2 => Notificaciones.Where(n => n.Read),
         _ => Notificaciones
     };
-    
+
+    private void OnActiveTabIndexChanged(int index)
+    {
+        ActiveTabIndex = index;
+        ActivePageIndex = 0; 
+    }
+    private IEnumerable<Notificacion> Paginadas()
+    {
+        var filtradas = Filtro().ToList();
+        return filtradas
+            .Skip(ActivePageIndex * PageSize)
+            .Take(PageSize);
+    }
 
     private void MarcadasTodasLeidas()
     {
@@ -84,5 +111,21 @@
         return Task.CompletedTask;
     }
 
-  
+    private void Simularnotificacion()
+    {
+        var noti = new Notificacion
+            {
+                Id = 7,
+                Title = "Nueva Notificación",
+                Body = "Esta es una notificación de prueba.",
+                CreateDate = DateTime.Now,
+                Read = false
+            };
+
+        NotificacionServicio.AgregarNotificacion(noti);
+        Notificaciones = NotificacionServicio.ObtenerTodas().ToList();
+        StateHasChanged();
+    }
+
 }
+ *@

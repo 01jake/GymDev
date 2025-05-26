@@ -1,0 +1,106 @@
+﻿@page "/TablaNotificaciones"
+@using GymDev.Client.Servicios
+@using GymDev.Shared.Data
+
+@inject NotificacionServicio NotificacionServicio
+
+@attribute [StreamRendering(true)]
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <h1 class="mb-0">Notificaciones</h1>
+
+        </div>
+        @if (noleidas > 0)
+        {
+            <DxButton Text="Marcar todas como leídas"
+                      RenderStyle="ButtonRenderStyle.Secondary"
+                      Click="@MarcadasTodasLeidas" />
+        }
+    </div>
+
+<div class="cw-480 mb-4">
+    <DxTabs ActiveTabIndex="@ActiveTabIndex" ActiveTabIndexChanged="@OnActiveTabIndexChanged">
+        <DxTab Text="Todas" TabIconCssClass="tabs-icon-home tabs-icon" />
+        <DxTab Text="No Leídas" TabIconCssClass="tabs-icon-products tabs-icon" />
+        <DxTab Text="Leídas" TabIconCssClass="tabs-icon-support tabs-icon" />
+        <PruebaNotificacion />
+
+    </DxTabs>
+</div>
+
+<DxGrid Data="@Filtradas"
+        PageSize="5"
+        PageSizeSelectorVisible="true"
+        PageSizeSelectorItems="@(new int[] { 5, 10, 20 })"
+        CssClass="w-100 h-100 border-0"
+        PagerPosition="GridPagerPosition.Bottom"
+        style="max-height: 23rem">
+    <Columns>
+        <DxGridDataColumn>
+            <CellDisplayTemplate Context="context">
+                <Pruebanoti1 DisplayContext="@(context.DataItem as Notificacion)"
+                             Click="Click" />
+            </CellDisplayTemplate>
+        </DxGridDataColumn>
+    </Columns>
+</DxGrid>
+
+<button class="btn btn-primary" @onclick="Simularnotificacion">Añadir mas notificaciones</button>
+
+@code {
+    private List<Notificacion> Notificaciones = new();
+    private int ActiveTabIndex = 0;
+    private IEnumerable<Notificacion> Filtradas => ActiveTabIndex switch
+    {
+        1 => Notificaciones.Where(n => !n.Read),
+        2 => Notificaciones.Where(n => n.Read),
+        _ => Notificaciones
+    };
+
+    private int noleidas => Notificaciones.Count(n => !n.Read);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await NotificacionServicio.InicializarAsync();
+        Notificaciones = NotificacionServicio.ObtenerTodas().ToList();
+    }
+
+    private void OnActiveTabIndexChanged(int index)
+    {
+        ActiveTabIndex = index;
+    }
+
+    private void MarcadasTodasLeidas()
+    {
+        foreach (var notif in Notificaciones)
+        {
+            notif.Read = true;
+        }
+    }
+
+    private Task Click(Notificacion notif)
+    {
+        notif.Read = true;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private void Simularnotificacion()
+    {
+        var noti = new Notificacion
+        {
+            Id = Notificaciones.Count + 1,
+            Title = "Nueva Notificación",
+            Body = "Esta es una notificación de prueba.",
+            CreateDate = DateTime.Now,
+            Read = false
+        };
+
+        NotificacionServicio.AgregarNotificacion(noti);
+        Notificaciones = NotificacionServicio.ObtenerTodas().ToList();
+        StateHasChanged();
+    }
+}

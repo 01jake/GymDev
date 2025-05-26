@@ -364,3 +364,12 @@ C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\sta
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev\GymDev.Client\obj\Debug\net9.0\staticwebassets.build.json

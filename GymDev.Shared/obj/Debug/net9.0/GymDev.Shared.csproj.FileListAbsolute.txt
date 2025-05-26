@@ -26,3 +26,4 @@ C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev.Shared\obj\Debug\net9.0\refint\Gym
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev.Shared\obj\Debug\net9.0\GymDev.Shared.pdb
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev.Shared\obj\Debug\net9.0\GymDev.Shared.genruntimeconfig.cache
 C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev.Shared\obj\Debug\net9.0\ref\GymDev.Shared.dll
+C:\Users\jake3\OneDrive\Desktop\GymDev\GymDev.Shared\obj\Debug\net9.0\GymDev.Shared.sourcelink.json
